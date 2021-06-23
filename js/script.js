@@ -79,12 +79,25 @@ function iniciarJogo(){
     if (direction == "up") snakeY -= box;
         
     if (direction == "down") snakeY += box;
-        
-    // simula o movimento da cobrinha
-    // conforme ela anda, o array cresce para um lado
-    // e diminui do outro
-    snake.pop();
+    
 
+    // verificacao de crescimento da cobrinha
+    if(snakeX != food.x || snakeY != food.y){
+        /* snake.pop()
+           simula o movimento da cobrinha
+           conforme ela anda, o array cresce para um lado
+           e diminui do outro
+        */
+        snake.pop();
+    } else {
+        // se a cobrinha comeu a comida,
+        // a cobrinha cresce de tamanho
+        // e a comida aparecera em outro lugar
+        food.x = Math.floor(Math.random() * 15 + 1) * box;
+        food.y = Math.floor(Math.random() * 15 + 1) * box;
+    }
+
+    // "nova cabeca", porque ela cresce de tamanho
     let newHead = {
         x: snakeX,
         y: snakeY
