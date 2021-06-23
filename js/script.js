@@ -7,7 +7,11 @@ snake[0] = {
     y: 8 * box
 }
 
-let direcion = "right";
+let direction = "right";
+let food = {
+    x: Math.floor(Math.random() * 15 + 1) * box,
+    y: Math.floor(Math.random() * 15 + 1) * box
+}
 
 // funcao que cria o canva
 function criarBG() {
@@ -23,31 +27,59 @@ function criarCobrinha(){
     }
 }
 
+// funcao que cria a comida
+function criarComida() {
+    context.fillStyle = "red";
+    context.fillRect(food.x, food.y, box, box);
+}
+
+// "ouve" o evento de pressionar uma tecla
+// e chama a função update passando como argumento
+// a tecla pressionada
+document.addEventListener('keydown', update);
+
+// funcao que atualiza o movimento da cobrinha
+function update(event) {
+    if(event.keyCode == 37 && direction != "right") direction = "left";
+    if(event.keyCode == 38 && direction != "down") direction = "up";
+    if(event.keyCode == 39 && direction != "left") direction = "right";
+    if(event.keyCode == 40 && direction != "up") direction = "down";
+}
+
 // funcao que inicia o jogo
 function iniciarJogo(){
+    
+    /* 
+       se a cabeca (snake[0]) for maior que 15,
+       ou seja, se ela ultrapassa o limite da tela,
+       ela aparece do outro lado da tela, ou, 0
+    */
+
+    // limite direita
+    if(snake[0].x > 15 * box && direction == "right") snake[0].x = 0;
+    // limite esquerda
+    if(snake[0].x < 0 && direction == "left") snake[0].x = 16 * box;
+    // limite baixo
+    if(snake[0].y > 15 * box && direction == "down") snake[0].y = 0;
+    // limite cima
+    if(snake[0].y < 0 && direction == "up") snake[0].y = 16 * box;
+
     criarBG();
     criarCobrinha();
+    criarComida();
 
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
 
     // condicionais para o movimento da cobrinha
-    if (direction == "right") {
-        snakeX += box;
-    }
-
-    if (direction == "left") {
-        snakeX -= box;
-    }
-
-    if (direction == "up") {
-        snakeY -= box;
-    }
-
-    if (direction == "down") {
-        snakeY += box;
-    }
-
+    if (direction == "right") snakeX += box;
+        
+    if (direction == "left") snakeX -= box;
+        
+    if (direction == "up") snakeY -= box;
+        
+    if (direction == "down") snakeY += box;
+        
     // simula o movimento da cobrinha
     // conforme ela anda, o array cresce para um lado
     // e diminui do outro
