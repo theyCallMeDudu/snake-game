@@ -48,13 +48,11 @@ function update(event) {
 
 // funcao que inicia o jogo
 function iniciarJogo(){
-    
     /* 
        se a cabeca (snake[0]) for maior que 15,
        ou seja, se ela ultrapassa o limite da tela,
        ela aparece do outro lado da tela, ou, 0
     */
-
     // limite direita
     if(snake[0].x > 15 * box && direction == "right") snake[0].x = 0;
     // limite esquerda
@@ -63,6 +61,20 @@ function iniciarJogo(){
     if(snake[0].y > 15 * box && direction == "down") snake[0].y = 0;
     // limite cima
     if(snake[0].y < 0 && direction == "up") snake[0].y = 16 * box;
+
+
+    // checagem de impacto da cabeca com o corpo
+    // se a cabeca se chocar com o corpo,
+    // o jogo chega ao fim
+    for (i = 1; i < snake.length; i++) {
+        
+        if(snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
+            clearInterval(jogo);
+            alert('Game Over :(');
+        }
+        
+    }
+
 
     criarBG();
     criarCobrinha();
